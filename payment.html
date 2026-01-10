@@ -1,13 +1,3 @@
-
-
-
-
-
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,9 +21,13 @@
         <h2 style="color: var(--dark-blue);">Verify Payment</h2>
         
         <p style="font-size: 14px; color: #666;">Scan QR to pay <b>Naman Jain</b></p>
-        <img src="qr code.png" class="qr-img" alt="UPI QR Code"> <div class="upi-id">UPI ID: namanjain1730@sbi</div> <p style="font-size: 12px; color: #888;">Receiving in: STATE BANK OF INDIA 0130</p> <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+        <img src="qr code.png" class="qr-img" alt="UPI QR Code"> 
+        <div class="upi-id">UPI ID: namanjain1730@sbi</div> 
+        <p style="font-size: 12px; color: #888;">Receiving in: STATE BANK OF INDIA 0130</p> 
+        <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
 
-        <p style="font-size: 14px; font-weight: bold;">Enter the 12-digit UTR/Reference No. after payment:</p> <input type="number" id="utr_input" placeholder="e.g. 4123XXXXXXXX">
+        <p style="font-size: 14px; font-weight: bold;">Enter the 12-digit UTR/Reference No. after payment:</p> 
+        <input type="number" id="utr_input" placeholder="e.g. 4123XXXXXXXX">
         <button class="btn-verify" onclick="submitOrder()">Verify & Submit Order</button>
     </div>
 
@@ -44,19 +38,22 @@
 
         async function submitOrder() {
             const utr = document.getElementById('utr_input').value;
-            if (utr.length !== 12) return alert("Please enter a valid 12-digit UTR number");
+            
+            // Validation for 12 digits
+            if (utr.length !== 12) {
+                return alert("Please enter a valid 12-digit UTR number");
+            }
 
-            const { data: { session } } = await _supabase.auth.getSession();
-            if (!session) return alert("Please login first!");
+            // Get saved details from session/local storage
+            const orderMsg = sessionStorage.getItem('pendingOrderMessage');
+            const user = JSON.parse(localStorage.getItem('nemi_user_details'));
+            const amount = sessionStorage.getItem('orderTotal') || 0;
 
-            const amount = localStorage.getItem('cartTotal') || 0;
-            const productName = "Order from Cart"; // Isse aap dynamic bhi bana sakte hain
-
-            // Supabase 'orders' table mein data save karna
+            // Supabase 'orders' table mein data save करना
             const { error } = await _supabase.from('orders').insert([
                 { 
-                    user_email: session.user.email,
-                    product_name: productName,
+                    user_email: user ? user.email : 'Unknown',
+                    product_name: "Cart Order",
                     amount: amount,
                     utr_number: utr,
                     status: 'Pending'
@@ -66,12 +63,18 @@
             if (error) {
                 alert("Error saving order: " + error.message);
             } else {
-                alert("Order submitted successfully! We will verify your payment soon.");
-                window.location.href = "index.html";
+                alert("Payment Verified! अब आपको ऑर्डर कन्फर्मेशन के लिए WhatsApp पर भेजा जा रहा है।");
+                
+                // WhatsApp Number
+                const myWhatsApp = "918248997125"; 
+                
+                // Final Message with UTR
+                const finalMessage = orderMsg + `%0A*UTR No:* ${utr}%0A*Status:* Payment Submitted`;
+
+                // Redirect to WhatsApp
+                window.location.href = `https://wa.me/${myWhatsApp}?text=${finalMessage}`;
             }
         }
     </script>
 </body>
-</html
-
-
+</html>
