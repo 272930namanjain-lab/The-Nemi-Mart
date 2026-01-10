@@ -66,16 +66,7 @@
 </div>
 
 <script>
-    // 1. Password Security Check
-    const accessKey = "11032007";
-    const userPass = prompt("Enter Admin Access Password:");
     
-    if (userPass === accessKey) {
-        document.body.style.display = "flex";
-    } else {
-        alert("Wrong Password! Access Denied.");
-        window.location.href = "index.html";
-    }
 
     const _supabase = supabase.createClient("https://rzmftpafcyxburlkwqnm.supabase.co", "sb_publishable_zt4Wt4wBgarEU15zF-RoKw_4achnceD");
 
@@ -141,3 +132,4 @@
 </script>
 </body>
 </html>
+
