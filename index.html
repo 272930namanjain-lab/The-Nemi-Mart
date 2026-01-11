@@ -27,7 +27,7 @@
         .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 25px; }
         
         /* Product Card */
-        .product-card { background: white; border-radius: 15px; overflow: hidden; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.05); cursor: pointer; }
+        .product-card { background: white; border-radius: 15px; overflow: hidden; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.05); cursor: pointer; position: relative; }
         .product-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
         .product-card img { width: 100%; height: 250px; object-fit: cover; background: #f9f9f9; }
         .product-info { padding: 20px; }
@@ -37,13 +37,13 @@
         .original-price { color: #888; text-decoration: line-through; font-size: 0.95rem; }
         .delivery-tag { color: var(--green); font-size: 0.85rem; font-weight: 600; }
 
-        .add-btn { background: var(--blue); color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; transition: 0.2s; }
+        .add-btn { background: var(--blue); color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; transition: 0.2s; position: relative; z-index: 2; }
         .add-btn:hover { background: var(--orange); }
 
         /* Modal Styles */
         .custom-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 95%; max-width: 550px; background: white; padding: 0; border-radius: 20px; box-shadow: 0 0 40px rgba(0,0,0,0.4); z-index: 3000; max-height: 90vh; overflow-y: auto; }
         .modal-body { padding: 25px; }
-        .modal-close-btn { position: sticky; top: 0; background: white; border: none; font-size: 20px; padding: 10px 20px; width: 100%; text-align: right; cursor: pointer; color: #888; border-bottom: 1px solid #eee; }
+        .modal-close-btn { position: sticky; top: 0; background: white; border: none; font-size: 18px; padding: 15px 20px; width: 100%; text-align: right; cursor: pointer; color: #888; border-bottom: 1px solid #eee; z-index: 10; font-weight: bold; }
         
         .custom-modal input, .custom-modal textarea { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 16px; }
         .modal-btn { background: var(--orange); color: white; border: none; width: 100%; padding: 15px; border-radius: 8px; font-weight: bold; cursor: pointer; }
@@ -53,7 +53,7 @@
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; z-index: 1500; backdrop-filter: blur(3px); }
         .overlay.active { display: block; }
 
-        .desc-text { color: var(--text-gray); line-height: 1.6; font-size: 1rem; white-space: pre-line; margin: 15px 0; }
+        .desc-text { color: var(--text-gray); line-height: 1.6; font-size: 1rem; white-space: pre-line; margin: 15px 0; background: #fdfdfd; padding: 10px; border-radius: 8px; }
         footer { text-align: center; padding: 40px; background: var(--blue); color: white; }
     </style>
 </head>
@@ -78,7 +78,7 @@
 </section>
 
 <div id="product-detail-modal" class="custom-modal">
-    <button class="modal-close-btn" onclick="closeAll()"><i class="fas fa-times"></i> Close</button>
+    <button class="modal-close-btn" onclick="closeAll()">CLOSE <i class="fas fa-times"></i></button>
     <div id="modal-content" class="modal-body">
         </div>
 </div>
@@ -172,20 +172,27 @@
         const content = document.getElementById('modal-content');
         
         content.innerHTML = `
-            <img src="${fixGDriveLink(p.image_url)}" style="width:100%; border-radius:15px; height:300px; object-fit:cover; margin-bottom:20px;" onerror="this.src='https://via.placeholder.com/300?text=Product+Image'">
-            <small style="color:var(--orange); font-weight:bold; text-transform:uppercase;">${p.category || 'Pure Essentials'}</small>
-            <h2 style="margin: 10px 0; color: var(--blue); font-size: 1.8rem;">${p.name}</h2>
-            <div style="margin-bottom:20px; display: flex; align-items: center; gap: 15px;">
-                <span class="discount-price" style="font-size: 1.8rem;">₹${p.price}</span> 
-                ${p.original_price ? `<del style="color:#888; font-size:1.1rem;">₹${p.original_price}</del>` : ''}
+            <img src="${fixGDriveLink(p.image_url)}" style="width:100%; border-radius:15px; height:280px; object-fit:cover; margin-bottom:15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);" onerror="this.src='https://via.placeholder.com/300?text=Product+Image'">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <div>
+                    <small style="color:var(--orange); font-weight:bold; text-transform:uppercase;">${p.category || 'Pure Essentials'}</small>
+                    <h2 style="margin: 5px 0; color: var(--blue); font-size: 1.6rem;">${p.name}</h2>
+                </div>
+                <div style="text-align:right;">
+                    <span class="discount-price" style="font-size: 1.6rem; display:block;">₹${p.price}</span> 
+                    ${p.original_price ? `<del style="color:#888; font-size:0.9rem;">₹${p.original_price}</del>` : ''}
+                </div>
             </div>
-            <p style="font-weight:bold; font-size:14px; color:var(--blue); margin-bottom:5px; border-bottom: 2px solid var(--orange); display: inline-block;">Product Description</p>
-            <div class="desc-text">${p.description || 'No detailed description provided for this product. High-quality purity guaranteed.'}</div>
-            <div style="background: #f9f9f9; padding: 15px; border-radius: 10px; margin-top: 20px;">
-                <p style="margin: 0; font-size: 13px; color: #666;"><b>Stock Status:</b> ${p.stock_status || 'Available'}</p>
-                <p style="margin: 5px 0 0; font-size: 13px; color: var(--green);"><b>Delivery:</b> ${p.is_free_shipping ? 'Free Delivery' : 'Standard Shipping'}</p>
+            
+            <p style="font-weight:bold; font-size:14px; color:var(--blue); margin: 20px 0 5px; border-bottom: 2px solid var(--orange); display: inline-block;">Product Details</p>
+            <div class="desc-text">${p.description || 'No detailed description provided. This is a high-quality product from The Nemi Mart.'}</div>
+            
+            <div style="background: #f1f5f9; padding: 12px; border-radius: 10px; margin-top: 15px; display:flex; justify-content:space-between;">
+                <span style="font-size: 13px; color: #444;"><b>Availability:</b> ${p.stock_status || 'In Stock'}</span>
+                <span style="font-size: 13px; color: var(--green);"><b>Shipping:</b> ${p.is_free_shipping ? 'Free' : 'Standard'}</span>
             </div>
-            <button class="add-btn" style="background:var(--blue); padding: 18px; font-size: 1.1rem; margin-top: 25px;" onclick="checkUserAndAdd('${p.id}')">Add to Cart - ₹${p.price}</button>
+            
+            <button class="add-btn" style="background:var(--orange); padding: 16px; font-size: 1.1rem; margin-top: 20px;" onclick="checkUserAndAdd('${p.id}')">Add To My Cart - ₹${p.price}</button>
         `;
 
         modal.style.display = 'block';
@@ -258,12 +265,6 @@
 
     function proceedToCheckout() {
         if (cart.length === 0) return alert("Your cart is empty!");
-        const user = JSON.parse(localStorage.getItem('nemi_user_details'));
-        
-        let itemsList = cart.map(i => `- ${i.name} (₹${i.price})`).join('%0A');
-        sessionStorage.setItem('pendingOrderMessage', itemsList);
-        sessionStorage.setItem('orderTotal', globalTotal);
-        
         window.location.href = 'payment.html';
     }
 
