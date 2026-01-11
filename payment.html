@@ -5,36 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verify Payment | The Nemi Mart</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --primary-orange: #e68a00; --dark-blue: #1a2332; }
-        body { font-family: 'Segoe UI', sans-serif; text-align: center; padding: 20px; background: #f9f9f9; }
-        .payment-box { background: white; padding: 30px; border-radius: 20px; max-width: 400px; margin: 0 auto; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        .total-pay { font-size: 24px; font-weight: 800; color: var(--dark-blue); margin-bottom: 10px; }
+        body { font-family: 'Segoe UI', sans-serif; text-align: center; padding: 20px; background: #f9f9f9; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
+        .payment-box { background: white; padding: 30px; border-radius: 20px; max-width: 400px; width: 100%; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
         .qr-img { width: 100%; max-width: 250px; margin: 20px 0; border: 1px solid #eee; border-radius: 10px; }
-        .upi-id { background: #eee; padding: 10px; border-radius: 8px; font-weight: bold; font-size: 14px; margin: 10px 0; display: inline-block; width: 100%; box-sizing: border-box; }
-        input { width: 100%; padding: 15px; margin: 15px 0; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; font-size: 16px; }
+        .upi-id { background: #eee; padding: 10px; border-radius: 8px; font-weight: bold; font-size: 14px; margin: 10px 0; }
+        input { width: 100%; padding: 12px; margin: 15px 0; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; font-size: 16px; text-align: center; }
         .btn-verify { background: var(--primary-orange); color: white; border: none; padding: 15px; width: 100%; border-radius: 30px; font-weight: bold; cursor: pointer; font-size: 16px; transition: 0.3s; }
-        .btn-verify:disabled { background: #ccc; cursor: not-allowed; }
+        .btn-verify:hover { background: var(--dark-blue); }
+        
+        /* Success Message Styling */
+        .success-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 1000; flex-direction: column; align-items: center; justify-content: center; }
     </style>
 </head>
 <body>
 
-    <div class="payment-box">
-        <h2 style="color: var(--dark-blue); margin-bottom: 5px;">Secure Payment</h2>
-        <div class="total-pay" id="display-amount">₹0</div>
-        
+    <div id="thank-you-note" class="success-overlay">
+        <i class="fas fa-check-circle" style="font-size: 80px; color: #27ae60; margin-bottom: 20px;"></i>
+        <h1 style="color: var(--dark-blue);">Order Placed!</h1>
+        <p style="color: #666; font-size: 18px; max-width: 80%;">Thank you for your purchase. Your payment is being verified.</p>
+        <p style="color: #888; font-size: 14px; margin-top: 10px;">Redirecting you shortly...</p>
+    </div>
+
+    <div class="payment-box" id="payment-form">
+        <h2 style="color: var(--dark-blue);">Verify Payment</h2>
         <p style="font-size: 14px; color: #666;">Scan QR to pay <b>Naman Jain</b></p>
-        <img src="qr code.png" class="qr-img" alt="UPI QR Code" onerror="this.src='https://via.placeholder.com/250?text=Scan+to+Pay'"> 
         
-        <div class="upi-id">UPI ID: namanjain1730@sbi</div> 
-        <p style="font-size: 12px; color: #888;">STATE BANK OF INDIA 0130</p> 
+        <img src="qr code.png" class="qr-img" alt="UPI QR Code"> 
         
+        <div class="upi-id">UPI ID: 1730namanjain@sbi</div> 
+        <p style="font-size: 12px; color: #888;">STATE BANK OF INDIA</p> 
         <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
 
-        <p style="font-size: 14px; font-weight: bold; color: var(--dark-blue);">Enter 12-digit UTR/Reference No. after payment:</p> 
-        <input type="text" id="utr_input" placeholder="e.g. 4123XXXXXXXX" maxlength="12">
-        
-        <button id="submit-btn" class="btn-verify" onclick="submitOrder()">Verify & Submit Order</button>
+        <p style="font-size: 14px; font-weight: bold;">Enter 12-digit UTR/Reference No. after payment:</p> 
+        <input type="number" id="utr_input" placeholder="e.g. 4123XXXXXXXX" oninput="if(this.value.length > 12) this.value = this.value.slice(0, 12);">
+        <button class="btn-verify" onclick="submitOrder()">Verify & Submit Order</button>
     </div>
 
     <script>
@@ -42,60 +49,68 @@
         const SB_KEY = "sb_publishable_zt4Wt4wBgarEU15zF-RoKw_4achnceD";
         const _supabase = supabase.createClient(SB_URL, SB_KEY);
 
-        // Load amount from session
-        const amount = sessionStorage.getItem('orderTotal') || 0;
-        document.getElementById('display-amount').innerText = '₹' + amount;
-
         async function submitOrder() {
-            const utrField = document.getElementById('utr_input');
-            const submitBtn = document.getElementById('submit-btn');
-            const utr = utrField.value.trim();
+            const utr = document.getElementById('utr_input').value;
             
-            // Validation: Must be exactly 12 digits
-            if (utr.length !== 12 || isNaN(utr)) {
+            if (utr.length !== 12) {
                 return alert("Please enter a valid 12-digit UTR number");
             }
 
-            // Get saved details
-            const orderMsg = sessionStorage.getItem('pendingOrderMessage');
-            const user = JSON.parse(localStorage.getItem('nemi_user_details'));
+            // Fetch data from storage
+            const orderMsg = sessionStorage.getItem('pendingOrderMessage') || "Cart Order";
+            const user = JSON.parse(localStorage.getItem('nemi_user_details')) || {};
+            const amount = sessionStorage.getItem('orderTotal') || "0";
 
-            if (!user) {
-                alert("Customer details not found. Please go back.");
-                window.location.href = 'index.html';
-                return;
-            }
-
-            // UI Update: Disable button to prevent double clicks
-            submitBtn.disabled = true;
-            submitBtn.innerText = "Processing Order...";
-
-            // Supabase 'orders' table insertion
+            // 1. Save to Supabase
             const { error } = await _supabase.from('orders').insert([
                 { 
-                    user_name: user.name,
-                    user_email: user.email,
-                    user_whatsapp: user.whatsapp,
-                    user_address: user.address,
+                    user_name: user.name || 'Unknown',
+                    user_email: user.email || 'N/A',
+                    user_whatsapp: user.whatsapp || 'N/A',
+                    address: user.address || 'N/A',
                     amount: amount,
                     utr_number: utr,
-                    status: 'Pending'
+                    status: 'Pending',
+                    order_details: orderMsg
                 }
             ]);
 
             if (error) {
                 alert("Database Error: " + error.message);
-                submitBtn.disabled = false;
-                submitBtn.innerText = "Verify & Submit Order";
-            } else {
-                alert("ऑर्डर सबमिट हो गया है! अब आपको WhatsApp पर भेजा जा रहा है।");
-                
-                const myWhatsApp = "918248997125"; 
-                const finalMessage = orderMsg + `%0A%0A*UTR No:* ${utr}%0A*Status:* Payment Submitted via Portal`;
-
-                // Redirect to WhatsApp with full details
-                window.location.href = `https://wa.me/${myWhatsApp}?text=${finalMessage}`;
+                return;
             }
+
+            // 2. Format Message for Admins
+            const finalFormat = `*✅ NEW ORDER CONFIRMED*%0A` +
+                                `--------------------------%0A` +
+                                `*UTR No:* ${utr}%0A` +
+                                `*Amount:* ₹${amount}%0A` +
+                                `*Customer:* ${user.name || 'N/A'}%0A` +
+                                `*WhatsApp:* ${user.whatsapp || 'N/A'}%0A` +
+                                `*Email:* ${user.email || 'N/A'}%0A` +
+                                `*Address:* ${user.address || 'N/A'}%0A%0A` +
+                                `*Purchase Details:*%0A${orderMsg}%0A` +
+                                `--------------------------%0A` +
+                                `_Please verify payment in bank._`;
+
+            // 3. Admin WhatsApp Numbers
+            const adminNumbers = ["918769531125", "919261133999", "918248997125"];
+
+            // 4. Show Success Screen
+            document.getElementById('thank-you-note').style.display = 'flex';
+            document.getElementById('payment-form').style.display = 'none';
+
+            // 5. Trigger WhatsApp to all 3 Admins
+            adminNumbers.forEach((num, index) => {
+                setTimeout(() => {
+                    window.open(`https://wa.me/${num}?text=${finalFormat}`, '_blank');
+                }, index * 1000); 
+            });
+
+            // 6. Redirect back to index.html after a delay
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 5000);
         }
     </script>
 </body>

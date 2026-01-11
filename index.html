@@ -11,7 +11,7 @@
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background: white; overflow-x: hidden; }
         
         header { background: white; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f0f0f0; position: sticky; top: 0; z-index: 1000; }
-        .logo-box { display: flex; align-items: center; gap: 12px; }
+        .logo-box { display: flex; align-items: center; gap: 12px; cursor: pointer; }
         .logo-img { width: 45px; height: 45px; border-radius: 50%; }
         .logo-text h1 { margin: 0; font-size: 1.1rem; color: var(--blue); letter-spacing: 0.5px; font-weight: 800; }
         .logo-text p { margin: 0; font-size: 9px; font-weight: bold; color: #888; text-transform: uppercase; letter-spacing: 1px; }
@@ -19,46 +19,49 @@
         .cart-icon-box { position: relative; cursor: pointer; font-size: 1.3rem; color: var(--blue); padding: 5px; }
         .cart-count { position: absolute; top: -5px; right: -5px; background: var(--orange); color: white; font-size: 10px; padding: 2px 6px; border-radius: 50%; font-weight: bold; }
 
-        .hero { text-align: center; padding: 80px 10% 60px; background: #fff; }
-        .hero h2 { font-size: 3rem; color: var(--blue); margin: 0 auto 20px; line-height: 1.1; max-width: 600px; font-weight: 800; }
+        .hero { text-align: center; padding: 60px 10% 40px; background: #fff; }
+        .hero h2 { font-size: 2.5rem; color: var(--blue); margin: 0 auto 15px; line-height: 1.1; font-weight: 800; }
         .hero h2 span { color: var(--orange); }
-        .hero p { color: var(--text-gray); font-size: 1.1rem; line-height: 1.6; max-width: 500px; margin: 0 auto 35px; }
         
         .container { padding: 40px 5%; background: var(--light); min-height: 400px; }
-        .section-title { margin-bottom: 30px; position: relative; padding-left: 20px; }
-        .section-title::before { content: ""; position: absolute; left: 0; top: 50%; width: 15px; height: 2px; background: var(--orange); }
-        .section-title h4 { margin: 0; font-size: 1.4rem; color: var(--blue); }
-
         .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 25px; }
-        .product-card { background: white; border-radius: 15px; overflow: hidden; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.05); position: relative; }
-        .product-card img { width: 100%; height: 250px; object-fit: cover; background: #eee; }
+        
+        /* Product Card */
+        .product-card { background: white; border-radius: 15px; overflow: hidden; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.05); cursor: pointer; }
+        .product-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
+        .product-card img { width: 100%; height: 250px; object-fit: cover; background: #f9f9f9; }
         .product-info { padding: 20px; }
         
         .price-container { margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
         .discount-price { color: var(--blue); font-size: 1.4rem; font-weight: bold; }
         .original-price { color: #888; text-decoration: line-through; font-size: 0.95rem; }
-        .delivery-tag { color: var(--green); font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 15px; }
+        .delivery-tag { color: var(--green); font-size: 0.85rem; font-weight: 600; }
 
-        .add-btn { background: var(--blue); color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; }
+        .add-btn { background: var(--blue); color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; transition: 0.2s; }
+        .add-btn:hover { background: var(--orange); }
 
-        #user-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 400px; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 0 20px rgba(0,0,0,0.2); z-index: 3000; }
-        #user-modal input, #user-modal textarea { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        /* Modal Styles */
+        .custom-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 95%; max-width: 550px; background: white; padding: 0; border-radius: 20px; box-shadow: 0 0 40px rgba(0,0,0,0.4); z-index: 3000; max-height: 90vh; overflow-y: auto; }
+        .modal-body { padding: 25px; }
+        .modal-close-btn { position: sticky; top: 0; background: white; border: none; font-size: 20px; padding: 10px 20px; width: 100%; text-align: right; cursor: pointer; color: #888; border-bottom: 1px solid #eee; }
+        
+        .custom-modal input, .custom-modal textarea { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 16px; }
         .modal-btn { background: var(--orange); color: white; border: none; width: 100%; padding: 15px; border-radius: 8px; font-weight: bold; cursor: pointer; }
 
         .cart-sidebar { position: fixed; top: 0; right: -400px; width: 350px; height: 100%; background: white; box-shadow: -5px 0 15px rgba(0,0,0,0.1); transition: 0.4s; z-index: 2000; padding: 20px; display: flex; flex-direction: column; }
         .cart-sidebar.active { right: 0; }
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; z-index: 1500; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; z-index: 1500; backdrop-filter: blur(3px); }
         .overlay.active { display: block; }
-        
-        footer { text-align: center; padding: 40px; background: var(--blue); color: white; font-size: 0.9rem; }
-        .no-products { text-align: center; color: #888; padding: 50px 0; grid-column: 1 / -1; }
+
+        .desc-text { color: var(--text-gray); line-height: 1.6; font-size: 1rem; white-space: pre-line; margin: 15px 0; }
+        footer { text-align: center; padding: 40px; background: var(--blue); color: white; }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="logo-box">
-        <img src="logo.png" class="logo-img" alt="The Nemi Mart Logo">
+    <div class="logo-box" onclick="window.location.reload()">
+        <img src="logo.png" class="logo-img" alt="Logo">
         <div class="logo-text">
             <h1>THE NEMI MART</h1>
             <p>Purity in Every Purchase</p>
@@ -72,23 +75,30 @@
 
 <section class="hero">
     <h2>Mindfulness in<br><span>Every Choice.</span></h2>
-    <p>Ethical, Pure, and Mindfully Curated products for a better lifestyle.</p>
 </section>
 
-<div id="user-modal">
-    <h3>Delivery Details</h3>
-    <input type="text" id="cust_name" placeholder="Full Name" required>
-    <input type="tel" id="cust_whatsapp" placeholder="WhatsApp Number" required>
-    <input type="email" id="cust_email" placeholder="Email Address" required>
-    <textarea id="cust_address" placeholder="Full Address with Pincode" rows="3" required></textarea>
-    <button class="modal-btn" onclick="saveDetailsAndAdd()">Save & Add to Cart</button>
-    <button onclick="closeModal()" style="background:none; border:none; color:gray; cursor:pointer; margin-top:10px; width:100%;">Cancel</button>
+<div id="product-detail-modal" class="custom-modal">
+    <button class="modal-close-btn" onclick="closeAll()"><i class="fas fa-times"></i> Close</button>
+    <div id="modal-content" class="modal-body">
+        </div>
+</div>
+
+<div id="user-modal" class="custom-modal">
+    <div class="modal-body">
+        <h3><i class="fas fa-truck"></i> Delivery Details</h3>
+        <p style="font-size: 12px; color: #666; margin-bottom: 10px;">Provide details to continue with your purchase.</p>
+        <input type="text" id="cust_name" placeholder="Full Name">
+        <input type="tel" id="cust_whatsapp" placeholder="WhatsApp Number">
+        <input type="email" id="cust_email" placeholder="Email Address">
+        <textarea id="cust_address" placeholder="Full Address with Pincode" rows="3"></textarea>
+        <button class="modal-btn" onclick="saveDetailsAndAdd()">Save & Add to Cart</button>
+        <button onclick="closeModal()" style="background:none; border:none; color:gray; cursor:pointer; margin-top:10px; width:100%;">Cancel</button>
+    </div>
 </div>
 
 <div class="container">
-    <div class="section-title"><h4>Featured Collection</h4></div>
-    <div id="product-list" class="product-grid">
-        <div class="no-products">Loading fresh products...</div>
+    <div class="product-grid" id="product-list">
+        <div style="text-align: center; grid-column: 1/-1;">Loading fresh products...</div>
     </div>
 </div>
 
@@ -102,72 +112,95 @@
     <div id="cart-items" style="flex:1; overflow-y:auto; margin-top:20px;"></div>
     <div style="border-top:1px solid #eee; padding-top:20px;">
         <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:1.2rem; margin-bottom:15px;">
-            <span>Total:</span><span id="total-amount">₹0</span>
+            <span>Total:</span><span id="total-amount-display">₹0</span>
         </div>
         <button onclick="proceedToCheckout()" style="background:var(--orange); color:white; border:none; width:100%; padding:15px; border-radius:8px; font-weight:bold; cursor:pointer;">Proceed to Pay</button>
     </div>
 </div>
 
 <footer>
-    <p>&copy; 2026 The Nemi Mart. Support: <a href="mailto:thenemimart@gmail.com">thenemimart@gmail.com</a></p>
+    <p>© 2026 The Nemi Mart. Support: thenemimart@gmail.com</p>
 </footer>
 
 <script>
     const _supabase = supabase.createClient("https://rzmftpafcyxburlkwqnm.supabase.co", "sb_publishable_zt4Wt4wBgarEU15zF-RoKw_4achnceD");
     let cart = [];
     let pendingProduct = null;
+    let allProducts = [];
+    let globalTotal = 0;
 
-    // Google Drive Link Converter
     function fixGDriveLink(link) {
-        if (link.includes('drive.google.com')) {
-            let id = "";
-            if (link.includes('id=')) {
-                id = link.split('id=')[1].split('&')[0];
-            } else {
-                id = link.split('/d/')[1].split('/')[0];
-            }
-            return `https://lh3.googleusercontent.com/u/0/d/${id}`;
+        if (link && link.includes('drive.google.com')) {
+            let id = link.includes('id=') ? link.split('id=')[1].split('&')[0] : link.split('/d/')[1].split('/')[0];
+            return `https://lh3.googleusercontent.com/d/${id}`;
         }
         return link;
     }
 
     async function loadProducts() {
-        const { data: products, error } = await _supabase.from('products').select('*');
+        const { data, error } = await _supabase.from('products').select('*').order('created_at', { ascending: false });
+        allProducts = data || [];
         const grid = document.getElementById('product-list');
         
-        if (!products || products.length === 0) {
-            grid.innerHTML = '<div class="no-products">Our shelves are being restocked. Check back soon!</div>';
+        if (allProducts.length === 0) {
+            grid.innerHTML = '<div style="grid-column:1/-1; text-align:center;">No products found.</div>';
             return;
         }
 
-        grid.innerHTML = products.map(p => {
-            const hasDiscount = p.original_price && p.original_price > p.price;
-            const finalImg = fixGDriveLink(p.image_url);
-            const freeShipping = p.is_free_shipping ? `<span class="delivery-tag"><i class="fas fa-truck"></i> Free Delivery</span>` : '';
-            
-            return `
-                <div class="product-card">
-                    <img src="${finalImg}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/300?text=The+Nemi+Mart'">
-                    <div class="product-info">
-                        <h3>${p.name}</h3>
-                        <div class="price-container">
-                            <span class="discount-price">₹${p.price}</span>
-                            ${hasDiscount ? `<span class="original-price">₹${p.original_price}</span>` : ''}
-                        </div>
-                        ${freeShipping}
-                        <button class="add-btn" onclick="checkUserAndAdd('${p.name}', ${p.price})">Add to Cart</button>
+        grid.innerHTML = allProducts.map(p => `
+            <div class="product-card" onclick="viewDetails('${p.id}')">
+                <img src="${fixGDriveLink(p.image_url)}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/300?text=The+Nemi+Mart'">
+                <div class="product-info">
+                    <small style="color:var(--orange); font-weight:bold; text-transform:uppercase;">${p.category || 'Pure Essentials'}</small>
+                    <h3 style="margin: 8px 0; font-size: 1.15rem; color: var(--blue);">${p.name}</h3>
+                    <div class="price-container">
+                        <span class="discount-price">₹${p.price}</span>
+                        ${p.original_price ? `<span class="original-price">₹${p.original_price}</span>` : ''}
                     </div>
+                    ${p.is_free_shipping ? '<span class="delivery-tag"><i class="fas fa-truck"></i> Free Shipping</span>' : ''}
+                    <button class="add-btn" onclick="event.stopPropagation(); checkUserAndAdd('${p.id}')">Add to Cart</button>
                 </div>
-            `;
-        }).join('');
+            </div>
+        `).join('');
     }
 
-    function checkUserAndAdd(name, price) {
+    function viewDetails(id) {
+        const p = allProducts.find(item => item.id === id);
+        if(!p) return;
+
+        const modal = document.getElementById('product-detail-modal');
+        const content = document.getElementById('modal-content');
+        
+        content.innerHTML = `
+            <img src="${fixGDriveLink(p.image_url)}" style="width:100%; border-radius:15px; height:300px; object-fit:cover; margin-bottom:20px;" onerror="this.src='https://via.placeholder.com/300?text=Product+Image'">
+            <small style="color:var(--orange); font-weight:bold; text-transform:uppercase;">${p.category || 'Pure Essentials'}</small>
+            <h2 style="margin: 10px 0; color: var(--blue); font-size: 1.8rem;">${p.name}</h2>
+            <div style="margin-bottom:20px; display: flex; align-items: center; gap: 15px;">
+                <span class="discount-price" style="font-size: 1.8rem;">₹${p.price}</span> 
+                ${p.original_price ? `<del style="color:#888; font-size:1.1rem;">₹${p.original_price}</del>` : ''}
+            </div>
+            <p style="font-weight:bold; font-size:14px; color:var(--blue); margin-bottom:5px; border-bottom: 2px solid var(--orange); display: inline-block;">Product Description</p>
+            <div class="desc-text">${p.description || 'No detailed description provided for this product. High-quality purity guaranteed.'}</div>
+            <div style="background: #f9f9f9; padding: 15px; border-radius: 10px; margin-top: 20px;">
+                <p style="margin: 0; font-size: 13px; color: #666;"><b>Stock Status:</b> ${p.stock_status || 'Available'}</p>
+                <p style="margin: 5px 0 0; font-size: 13px; color: var(--green);"><b>Delivery:</b> ${p.is_free_shipping ? 'Free Delivery' : 'Standard Shipping'}</p>
+            </div>
+            <button class="add-btn" style="background:var(--blue); padding: 18px; font-size: 1.1rem; margin-top: 25px;" onclick="checkUserAndAdd('${p.id}')">Add to Cart - ₹${p.price}</button>
+        `;
+
+        modal.style.display = 'block';
+        document.getElementById('overlay').classList.add('active');
+    }
+
+    function checkUserAndAdd(id) {
+        const p = allProducts.find(item => item.id === id);
         const savedUser = localStorage.getItem('nemi_user_details');
+        
         if (savedUser) {
-            addToCart(name, price);
+            addToCart(p.name, p.price);
         } else {
-            pendingProduct = { name, price };
+            pendingProduct = { name: p.name, price: p.price };
+            closeAll();
             document.getElementById('user-modal').style.display = 'block';
             document.getElementById('overlay').classList.add('active');
         }
@@ -180,7 +213,7 @@
             email: document.getElementById('cust_email').value,
             address: document.getElementById('cust_address').value
         };
-        if(!details.name || !details.whatsapp || !details.address) return alert("Please fill details!");
+        if(!details.name || !details.whatsapp || !details.address) return alert("Please fill Name, WhatsApp, and Address!");
         localStorage.setItem('nemi_user_details', JSON.stringify(details));
         closeModal();
         if(pendingProduct) { addToCart(pendingProduct.name, pendingProduct.price); pendingProduct = null; }
@@ -194,17 +227,16 @@
 
     function updateCartUI() {
         document.getElementById('cart-count').innerText = cart.length;
-        let total = 0;
+        globalTotal = 0;
         document.getElementById('cart-items').innerHTML = cart.map((item, index) => {
-            total += item.price;
+            globalTotal += item.price;
             return `
             <div style="display:flex; justify-content:space-between; margin-bottom:15px; border-bottom:1px solid #f0f0f0; padding-bottom:10px;">
                 <div><b>${item.name}</b><br><span style="color:var(--orange)">₹${item.price}</span></div>
                 <i class="fas fa-trash" style="color:red; cursor:pointer;" onclick="removeFromCart(${index})"></i>
             </div>`;
         }).join('');
-        document.getElementById('total-amount').innerText = '₹' + total;
-        sessionStorage.setItem('orderTotal', total);
+        document.getElementById('total-amount-display').innerText = '₹' + globalTotal;
     }
 
     function removeFromCart(index) { cart.splice(index, 1); updateCartUI(); }
@@ -216,15 +248,22 @@
         else { side.classList.toggle('active'); over.classList.toggle('active'); }
     }
 
-    function closeModal() { document.getElementById('user-modal').style.display = 'none'; document.getElementById('overlay').classList.remove('active'); }
+    function closeModal() { 
+        document.getElementById('user-modal').style.display = 'none'; 
+        document.getElementById('product-detail-modal').style.display = 'none';
+        document.getElementById('overlay').classList.remove('active'); 
+    }
+    
     function closeAll() { closeModal(); document.getElementById('cart-sidebar').classList.remove('active'); }
 
     function proceedToCheckout() {
-        if (cart.length === 0) return alert("Cart is empty!");
+        if (cart.length === 0) return alert("Your cart is empty!");
         const user = JSON.parse(localStorage.getItem('nemi_user_details'));
+        
         let itemsList = cart.map(i => `- ${i.name} (₹${i.price})`).join('%0A');
-        const orderMsg = `*New Order from The Nemi Mart*%0A%0A*Customer:* ${user.name}%0A*WhatsApp:* ${user.whatsapp}%0A*Address:* ${user.address}%0A%0A*Items:*%0A${itemsList}%0A%0A*Total Amount:* ₹${sessionStorage.getItem('orderTotal')}`;
-        sessionStorage.setItem('pendingOrderMessage', orderMsg);
+        sessionStorage.setItem('pendingOrderMessage', itemsList);
+        sessionStorage.setItem('orderTotal', globalTotal);
+        
         window.location.href = 'payment.html';
     }
 
