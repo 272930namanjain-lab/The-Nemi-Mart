@@ -10,7 +10,7 @@
         :root { --blue: #1a2332; --orange: #e68a00; --light: #f4f7f6; --text-gray: #4a4a4a; --green: #27ae60; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background: white; overflow-x: hidden; }
         
-        header { background: white; padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f0f0f0; position: sticky; top: 0; z-index: 1000; }
+        header { background: white; padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f0f0f0; position: sticky; top: 0; z-index: 2000; }
         .logo-box { display: flex; align-items: center; gap: 12px; cursor: pointer; }
         .logo-img { width: 40px; height: 40px; border-radius: 50%; }
         .logo-text h1 { margin: 0; font-size: 1rem; color: var(--blue); font-weight: 800; }
@@ -29,43 +29,31 @@
         .hero h2 span { color: var(--orange); }
         
         .container { padding: 20px 5%; background: var(--light); min-height: 500px; }
-        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
         
-        .product-card { background: white; border-radius: 12px; overflow: hidden; transition: 0.3s; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .product-card:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        .product-card img { width: 100%; height: 200px; object-fit: cover; background: #f9f9f9; }
-        .product-info { padding: 15px; text-align: center; }
+        .product-card { background: white; border-radius: 12px; overflow: hidden; transition: 0.3s; box-shadow: 0 2px 10px rgba(0,0,0,0.05); display: flex; flex-direction: column; height: 100%; }
+        .product-card img { width: 100%; height: 180px; object-fit: cover; background: #f9f9f9; cursor: pointer; }
+        .product-info { padding: 15px; text-align: center; flex-grow: 1; display: flex; flex-direction: column; }
         
         .price-container { margin: 8px 0; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .discount-price { color: var(--blue); font-size: 1.2rem; font-weight: bold; }
+        .discount-price { color: var(--blue); font-size: 1.1rem; font-weight: bold; }
         
-        .add-btn { background: var(--blue); color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 5px; transition: 0.3s; }
-        .view-btn { background: white; color: var(--blue); border: 1px solid var(--blue); padding: 8px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; transition: 0.3s; }
-        .view-btn:hover { background: #f0f0f0; }
+        .add-btn { background: var(--blue); color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; margin-top: auto; transition: 0.2s; }
         .add-btn:hover { background: var(--orange); }
+        .view-btn { background: #f8f9fa; color: var(--blue); border: 1px solid #ddd; padding: 8px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; margin-bottom: 8px; font-size: 13px; }
 
-        /* MODAL SYSTEM */
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; z-index: 2000; backdrop-filter: blur(3px); }
+        /* SIDEBARS & MODALS */
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; z-index: 2500; backdrop-filter: blur(4px); }
         .overlay.active { display: block; }
-
-        .custom-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 450px; background: white; border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); z-index: 3000; max-height: 85vh; overflow-y: auto; }
-        .modal-body { padding: 20px; position: relative; }
-        .modal-close-btn { position: absolute; right: 15px; top: 15px; cursor: pointer; font-size: 24px; color: #333; border: none; background: none; font-weight: bold; z-index: 10; }
-        
-        .desc-text { color: var(--text-gray); line-height: 1.6; font-size: 14px; white-space: pre-line; margin: 15px 0; text-align: left; }
-        .detail-item { font-size: 14px; margin: 5px 0; color: #555; text-align: left; }
-        .detail-item b { color: var(--blue); }
-
-        .cart-sidebar { position: fixed; top: 0; right: -400px; width: 320px; height: 100%; background: white; box-shadow: -5px 0 15px rgba(0,0,0,0.1); transition: 0.4s; z-index: 2500; padding: 20px; display: flex; flex-direction: column; }
+        .custom-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 420px; background: white; border-radius: 15px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); z-index: 3000; padding: 30px; }
+        .cart-sidebar { position: fixed; top: 0; right: -400px; width: 330px; height: 100%; background: white; box-shadow: -10px 0 30px rgba(0,0,0,0.1); transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); z-index: 2600; padding: 25px; display: flex; flex-direction: column; }
         .cart-sidebar.active { right: 0; }
-
-        footer { text-align: center; padding: 30px; background: var(--blue); color: white; font-size: 13px; }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="logo-box" onclick="window.location.reload()">
+    <div class="logo-box" onclick="location.reload()">
         <img src="logo.png" class="logo-img" alt="Logo">
         <div class="logo-text">
             <h1>THE NEMI MART</h1>
@@ -85,79 +73,83 @@
     </div>
 </header>
 
-<section class="hero"><h2>Mindfulness in<br><span>Every Choice.</span></h2></section>
-
-<div id="product-detail-modal" class="custom-modal">
-    <div class="modal-body">
-        <button class="modal-close-btn" onclick="closeModal()">×</button>
-        <div id="modal-content"></div>
+<main id="home-section">
+    <section class="hero"><h2>Purity in<br><span>Every Choice.</span></h2></section>
+    <div class="container">
+        <div class="product-grid" id="product-list"></div>
     </div>
-</div>
-
-<div id="user-modal" class="custom-modal">
-    <div class="modal-body">
-        <h3>Delivery Details</h3>
-        <input type="text" id="cust_name" placeholder="Full Name">
-        <input type="tel" id="cust_whatsapp" placeholder="WhatsApp Number">
-        <input type="email" id="cust_email" placeholder="Email Address">
-        <textarea id="cust_address" placeholder="Full Address with Pincode" rows="3" style="width:100%; padding:10px; border-radius:8px; border:1px solid #ddd;"></textarea>
-        <button class="add-btn" onclick="saveUserDetails()" style="background:var(--orange);">Save Details</button>
-    </div>
-</div>
-
-<div id="checkout-modal" class="custom-modal">
-    <div class="modal-body">
-        <h3>Confirm Address</h3>
-        <div id="address-preview" style="background:#f4f4f4; padding:15px; border-radius:10px; margin:10px 0;"></div>
-        <button class="add-btn" onclick="finalizeCheckout()" style="background:var(--green);">Confirm & Pay</button>
-        <button onclick="closeModal()" style="border:none; background:none; color:gray; width:100%; margin-top:10px; cursor:pointer;">Cancel</button>
-    </div>
-</div>
-
-<div class="container"><div class="product-grid" id="product-list"></div></div>
+</main>
 
 <div class="overlay" id="overlay" onclick="closeAll()"></div>
 
-<div class="cart-sidebar" id="cart-sidebar">
-    <h3>My Cart</h3>
-    <div id="cart-items" style="flex:1; overflow-y:auto;"></div>
-    <div style="border-top:1px solid #eee; padding-top:20px;">
-        <div style="display:flex; justify-content:space-between; font-weight:bold; margin-bottom:10px;">
-            <span>Total:</span><span id="total-amount-display">₹0</span>
-        </div>
-        <button onclick="handleCheckoutStep()" style="background:var(--orange);" class="add-btn">Proceed to Pay</button>
-    </div>
+<div id="user-modal" class="custom-modal">
+    <h3 style="margin-top:0;">Delivery Address</h3>
+    <input type="text" id="cust_name" placeholder="Your Name" style="width:100%; padding:12px; margin:10px 0; border:1px solid #ddd; border-radius:8px; box-sizing:border-box;">
+    <input type="tel" id="cust_whatsapp" placeholder="WhatsApp Number" style="width:100%; padding:12px; margin:10px 0; border:1px solid #ddd; border-radius:8px; box-sizing:border-box;">
+    <textarea id="cust_address" placeholder="Complete Address with Pincode" rows="3" style="width:100%; padding:12px; margin:10px 0; border:1px solid #ddd; border-radius:8px; box-sizing:border-box;"></textarea>
+    <button class="add-btn" onclick="saveUserDetails()" style="background:var(--orange); padding:15px; font-size:16px;">Save & Proceed</button>
 </div>
+
+<div id="checkout-modal" class="custom-modal">
+    <h3>Review Address</h3>
+    <div id="address-preview" style="background:#f8f9fa; padding:15px; border-radius:10px; margin-bottom:15px; font-size:14px; line-height:1.6; color:#555;"></div>
+    <button class="add-btn" onclick="finalizeCheckout()" style="background:var(--green); padding:15px; font-size:16px;">Confirm & Pay Now</button>
+    <p onclick="closeModal()" style="text-align:center; color:gray; cursor:pointer; margin-top:15px; font-size:14px;">Edit Details</p>
+</div>
+
+<aside class="cart-sidebar" id="cart-sidebar">
+    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #eee; padding-bottom:15px; margin-bottom:15px;">
+        <h3 style="margin:0;">Shopping Cart</h3>
+        <i class="fas fa-times" onclick="toggleCart()" style="cursor:pointer; font-size:1.2rem;"></i>
+    </div>
+    <div id="cart-items" style="flex:1; overflow-y:auto;"></div>
+    <div style="border-top:2px solid #f4f4f4; padding-top:20px; margin-top:10px;">
+        <div style="display:flex; justify-content:space-between; font-weight:800; font-size:1.2rem; margin-bottom:15px;">
+            <span>Subtotal:</span><span id="total-amount-display">₹0</span>
+        </div>
+        <button onclick="handleCheckoutStep()" class="add-btn" style="background:var(--orange); padding:16px; font-size:16px;">Checkout</button>
+    </div>
+</aside>
 
 <script>
     const _supabase = supabase.createClient("https://rzmftpafcyxburlkwqnm.supabase.co", "sb_publishable_zt4Wt4wBgarEU15zF-RoKw_4achnceD");
     let cart = [], allProducts = [], globalTotal = 0, productToAddToCart = null;
 
+    // Google Drive Image Link Fix
     function fixGDriveLink(link) {
         if (!link) return 'https://via.placeholder.com/300';
         if (link.includes('drive.google.com')) {
-            const id = link.includes('id=') ? link.split('id=')[1].split('&')[0] : link.split('/d/')[1].split('/')[0];
-            return `https://lh3.googleusercontent.com/u/0/d/${id}`;
+            const id = link.split('id=')[1] || link.split('/d/')[1].split('/')[0];
+            return `https://lh3.googleusercontent.com/d/${id}`;
         }
         return link;
     }
 
     async function loadProducts() {
-        const { data } = await _supabase.from('products').select('*').order('created_at', { ascending: false });
+        const { data, error } = await _supabase.from('products').select('*').order('created_at', { ascending: false });
+        if(error) return console.error("Database Error:", error);
         allProducts = data || [];
         displayProducts(allProducts);
+        
+        // Load cart from localStorage on page load
+        const savedCart = localStorage.getItem('nemi_cart');
+        if(savedCart) {
+            cart = JSON.parse(savedCart);
+            updateCartUI();
+        }
     }
 
     function displayProducts(products) {
         const grid = document.getElementById('product-list');
+        if(products.length === 0) { grid.innerHTML = "<p>Coming soon...</p>"; return; }
+        
         grid.innerHTML = products.map(p => `
             <div class="product-card">
-                <img src="${fixGDriveLink(p.image_url)}" alt="${p.name}" onclick="viewDetails('${p.id}')" style="cursor:pointer;">
+                <img src="${fixGDriveLink(p.image_url)}" alt="${p.name}" onclick="viewDetails('${p.id}')">
                 <div class="product-info">
-                    <small style="color:var(--orange); font-weight:bold;">${p.category || 'Pure'}</small>
-                    <h3 style="margin:5px 0; font-size:1rem;">${p.name}</h3>
+                    <small style="color:var(--orange); font-weight:bold; letter-spacing:1px; margin-bottom:5px; display:block;">${p.category || 'ORGANIC'}</small>
+                    <h3 style="margin:0 0 10px; font-size:0.95rem; color:var(--blue);">${p.name}</h3>
                     <div class="price-container"><span class="discount-price">₹${p.price}</span></div>
-                    
                     <button class="view-btn" onclick="viewDetails('${p.id}')">View Details</button>
                     <button class="add-btn" onclick="tryAddToCart('${p.id}')">Add to Cart</button>
                 </div>
@@ -165,28 +157,14 @@
         `).join('');
     }
 
+    // UPDATED: Redirect to viewdetails.html
+    function viewDetails(id) {
+        window.location.href = `viewdetails.html?id=${id}`;
+    }
+
     function filterProducts() {
         const q = document.getElementById('product-search').value.toLowerCase();
         displayProducts(allProducts.filter(p => p.name.toLowerCase().includes(q) || (p.category && p.category.toLowerCase().includes(q))));
-    }
-
-    function viewDetails(id) {
-        const p = allProducts.find(item => item.id === id);
-        if(!p) return;
-        document.getElementById('modal-content').innerHTML = `
-            <img src="${fixGDriveLink(p.image_url)}" style="width:100%; border-radius:10px; height:250px; object-fit:cover;">
-            <h2 style="margin:15px 0 5px; text-align:left;">${p.name}</h2>
-            
-            <div class="detail-item"><b>Category:</b> ${p.category || 'N/A'}</div>
-            <div class="detail-item"><b>Availability:</b> ${p.stock_status || 'In Stock'}</div>
-            <div class="detail-item"><b>Price:</b> ₹${p.price}</div>
-            
-            <div class="desc-text"><b>Description:</b><br>${p.description || 'Purity guaranteed with every purchase.'}</div>
-            
-            <button class="add-btn" style="padding:15px;" onclick="tryAddToCart('${p.id}')">Add to Cart - ₹${p.price}</button>
-        `;
-        document.getElementById('product-detail-modal').style.display = 'block';
-        document.getElementById('overlay').classList.add('active');
     }
 
     function tryAddToCart(id) {
@@ -196,8 +174,8 @@
             openProfile();
         } else {
             cart.push({ name: p.name, price: p.price });
+            localStorage.setItem('nemi_cart', JSON.stringify(cart));
             updateCartUI();
-            closeModal();
             toggleCart(true);
         }
     }
@@ -206,47 +184,63 @@
         document.getElementById('cart-count').innerText = cart.length;
         globalTotal = cart.reduce((s, i) => s + i.price, 0);
         document.getElementById('cart-items').innerHTML = cart.map((item, i) => `
-            <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #eee;">
-                <span>${item.name}</span>
-                <span><b>₹${item.price}</b> <i class="fas fa-trash" style="color:red; margin-left:10px; cursor:pointer;" onclick="removeFromCart(${i})"></i></span>
+            <div style="display:flex; justify-content:space-between; padding:15px 0; border-bottom:1px solid #f0f0f0; align-items:center;">
+                <div style="flex:1;">
+                    <div style="font-weight:600; font-size:14px; color:var(--blue);">${item.name}</div>
+                    <div style="color:var(--orange); font-weight:700; font-size:13px;">₹${item.price}</div>
+                </div>
+                <i class="fas fa-trash" style="color:#ff4d4d; cursor:pointer; font-size:0.9rem; padding:10px;" onclick="removeFromCart(${i})"></i>
             </div>`).join('');
         document.getElementById('total-amount-display').innerText = '₹' + globalTotal;
     }
 
-    function removeFromCart(i) { cart.splice(i, 1); updateCartUI(); }
-    function toggleCart(o = null) {
-        const s = document.getElementById('cart-sidebar'), v = document.getElementById('overlay');
-        if(o === true) { s.classList.add('active'); v.classList.add('active'); }
-        else { s.classList.toggle('active'); v.classList.toggle('active'); }
+    function removeFromCart(i) { 
+        cart.splice(i, 1); 
+        localStorage.setItem('nemi_cart', JSON.stringify(cart));
+        updateCartUI(); 
     }
+
+    function toggleCart(open = null) {
+        const s = document.getElementById('cart-sidebar'), v = document.getElementById('overlay');
+        if(open === true) { s.classList.add('active'); v.classList.add('active'); }
+        else { s.classList.toggle('active'); if(s.classList.contains('active')) v.classList.add('active'); else v.classList.remove('active'); }
+    }
+
     function openProfile() { 
         document.getElementById('user-modal').style.display = 'block'; 
         document.getElementById('overlay').classList.add('active'); 
     }
+
     function saveUserDetails() {
         const name = document.getElementById('cust_name').value, wa = document.getElementById('cust_whatsapp').value, ad = document.getElementById('cust_address').value;
-        if (!name || !wa || !ad) return alert("Fill all details!");
+        if (!name || !wa || !ad) return alert("All fields are mandatory!");
         localStorage.setItem('nemi_user_details', JSON.stringify({ name, whatsapp: wa, address: ad }));
         closeModal();
         if(productToAddToCart) { tryAddToCart(productToAddToCart.id); productToAddToCart = null; }
     }
+
     function handleCheckoutStep() {
+        if(cart.length === 0) return alert("Your cart is empty!");
         const u = JSON.parse(localStorage.getItem('nemi_user_details'));
-        if(!u) return openProfile();
-        document.getElementById('address-preview').innerHTML = `<b>${u.name}</b><br>${u.whatsapp}<br>${u.address}`;
+        if(!u) { toggleCart(); openProfile(); return; }
+        document.getElementById('address-preview').innerHTML = `<b>Deliver to:</b><br>${u.name}<br>WA: ${u.whatsapp}<br>${u.address}`;
         document.getElementById('checkout-modal').style.display = 'block';
         document.getElementById('overlay').classList.add('active');
     }
+
     function finalizeCheckout() {
         sessionStorage.setItem('pendingOrderMessage', cart.map(i => `- ${i.name}`).join('%0A'));
         sessionStorage.setItem('orderTotal', globalTotal);
         window.location.href = 'payment.html';
     }
+
     function closeModal() {
         document.querySelectorAll('.custom-modal').forEach(m => m.style.display = 'none');
         if(!document.getElementById('cart-sidebar').classList.contains('active')) document.getElementById('overlay').classList.remove('active');
     }
+
     function closeAll() { closeModal(); document.getElementById('cart-sidebar').classList.remove('active'); document.getElementById('overlay').classList.remove('active'); }
+    
     window.onload = loadProducts;
 </script>
 </body>
